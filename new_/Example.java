@@ -1,43 +1,5 @@
 import java.util.*;
 
-
-/*
-public class Example {
-    public static int fact(int x){
-        int fact = 1;
-
-        while(x > 0){
-            fact = fact * x;
-            x = x - 1;
-        }
-
-        return fact;
-    }
-
-    public static void main(String[] args) {
-        // System.out.println("Hello world !");
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("Input the number : ");
-        int number = input.nextInt();
-
-        if(number >= 0){
-            System.out.println("Result is "+fact(number));
-        }
-        else{
-            System.out.println("Input number is Invalid");
-        }
-    }
-}
-*/
-
-
-
-
-
-
-
 class TreeNode{
     int key;
     TreeNode left,right;
@@ -56,77 +18,100 @@ class BinarySearchTree{
         root = null;
     }
 
-    public void insert(int key){
 
-        TreeNode node = new TreeNode(key);
-        
+    // Inserting,
+
+    public void insert(int key){
+        root = insertRec(root,key);
+    }
+
+    private TreeNode insertRec(TreeNode root,int key){
+        //TreeNode node = new TreeNode(key);
+
         if(root == null){
             System.out.println("Insert value to the Root");
-            root = node;
-            return;
+            root = new TreeNode(key);
+            return root;
         }
-
-        TreeNode current = root;
-
-        while(true){
-            if(current.key > key){
-                if(current.left == null){
-                    System.out.println("Insert value to the left of " + current.key);
-                    current.left = node;
-                    return;
-                }
-                else{
-                    current = current.left;
-                }
-            }
-            else if(current.key < key){
-                if(current.right == null){
-                    System.out.println("Insert value to the right of " + current.key);
-                    current.right = node;
-                    return;
-                }
-                else{
-                    current = current.right;
-                }
-            }
-            else{
-                System.out.println("This value already inserted");
-                return;
-            }
+        
+        if(root.key > key){
+            System.out.println("Insert value to the left of " + root.key);
+            root.left = insertRec(root.left, key);
         }
+        else if(root.key < key){
+            System.out.println("Insert value to the right of " + root.key);
+            root.right = insertRec(root.right, key);
+        }
+        else{
+            System.out.println("Insert value already has");
+        }
+        return root;
 
     }
 
 
-    public boolean search(int val){
-        TreeNode current = root;
+    // Searching
 
-        while(true){
-            if(current.key > val){
-                System.out.println("Searching value from left of " + current.key);
-                current = current.left;
-            }
-            else if(current.key < val){
-                System.out.println("Searching value from right of " + current.key);
-                current = current.right;
-            }
-            else{
-                return true;
-            }
+    public TreeNode search(int key){
+        return searchRec(root, key);
+    }
+
+    private TreeNode searchRec(TreeNode root,int key){
+        if(root == null || root.key == key){
+            return root;
         }
+
+        if(root.key > key){
+            return searchRec(root.left,key);
+        }
+        
+        return searchRec(root.right,key);
     }
 }
 
 
 public class Example{
     public static void main(String args[]){
+        Scanner input = new Scanner(System.in);
+
         BinarySearchTree bst = new BinarySearchTree();
 
-        bst.insert(8);
-        bst.insert(6);
-        bst.insert(3);
-        bst.insert(12);
+        System.out.println("Insert value for Search : (Do you want to end -> No)");
+        String val = input.nextLine();
 
-        System.out.println("Searching vlaue is " + bst.search(3));
+        while(!val.equals("No")){
+            // bst.insert(Integer.parseInt(val));
+            
+            System.out.println(bst.search(Integer.parseInt(val)) == null ? "not found" : "found");
+
+            System.out.println("Insert value for Search : (Do you want to end -> No)");
+            val = input.nextLine();
+        }
+
+        // bst.insert(8);
+        // bst.insert(3);
+        // bst.insert(6);
+        // bst.insert(2);
+        // bst.insert(10);
+        // bst.insert(4);
+        // bst.insert(3);
+
+        // System.out.println(bst.search(7) == null ? "not found" : "found");
+
+
+
+
+
+        // int[] arr = new int[5];
+
+        // for(int i=0;i<arr.length;i++){
+        //     arr[i] = i;
+        // }
+
+        // int j=0;
+        // while(j<arr.length){
+        //     System.out.println(arr[j]);
+        //     j++;
+        // }
     }
 }
